@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiteCraft Deluxe | 55 Intercontinental & African Recipes</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #FFFDF9;
+            color: #333;
+        }
+
+        /* HEADER & NAVIGATION */
+        header {
+            background-color: #800020; /* Maroon */
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        header .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        header .logo span {
+            color: #FFE135; /* Banana Yellow */
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #FFE135;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(rgba(128, 0, 32, 0.85), rgba(128, 0, 32, 0.85)), url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=1200') no-repeat center center/cover;
+            height: 50vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 45px;
+            color: #FFE135;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        /* FILTER CONTROLS */
+        .controls-section {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            color: #800020;
+            margin-bottom: 25px;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .filter-btn {
+            background-color: white;
+            color: #800020;
+            border: 2px solid #800020;
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #800020;
+            color: white;
+        }
+
+        /* RECIPE GRID CONTAINER */
+        .recipes-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* DYNAMIC RECIPE CARD STYLES */
+        .recipe-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            border: 1px solid rgba(128, 0, 32, 0.08);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+        }
+
+        .recipe-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .recipe-card:hover .recipe-img {
+            transform: scale(1.06);
+        }
+
+        .region-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #FFE135;
+            color: #800020;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .category-tag {
+            color: #800020;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .card-content h3 {
+            color: #800020;
+            font-size: 20px;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .card-content p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .view-btn {
+            background-color: #800020;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .view-btn:hover {
+            background-color: #FFE135;
+            color: #800020;
+        }
+
+        /* COOKING MODAL POPUP SYSTEM */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 650px;
+            max-height: 85vh;
+            border-radius: 15px;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-title {
+            color: #800020;
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        .modal-meta {
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #b08d00;
+            margin-bottom: 20px;
+        }
+
+        .modal-subtitle {
+            color: #800020;
+            font-size: 18px;
+            margin: 15px 0 8px 0;
+            border-bottom: 2px solid #FFE135;
+            padding-bottom: 4px;
+        }
+
+        .modal-body ul, .modal-body ol {
+            padding-left: 20px;
+            color: #444;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .modal-body li {
+            margin-bottom: 6px;
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #800020;
+            color: white;
+            border: 2px solid white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: background 0.2s;
+        }
+
+        .close-modal-btn:hover {
+            background: #FFE135;
+            color: #800020;
+        }
+
+        /* MEAL PLANNER ENGINE SECTION */
+        .planner-section {
+            background-color: #800020;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .planner-box {
+            max-width: 650px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .planner-box h2 {
+            color: #FFE135;
+            margin-bottom: 15px;
+        }
+
+        .planner-display {
+            background: white;
+            color: #333;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: left;
+            margin: 25px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .plan-row {
+            font-size: 16px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .plan-row:last-child {
+            border: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .plan-row strong {
+            color: #800020;
+        }
+
+        #roll-dice-btn {
+            background-color: #FFE135;
+            color: #800020;
+            border: none;
+            padding: 15px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.1s, background-color 0.3s;
+        }
+
+        #roll-dice-btn:hover {
+            background-color: white;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #190006;
+            color: #bbb;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 32px; }
+            header { flex-direction: column; gap: 15px; }
+            header nav a { margin: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Bite<span>Craft</span></div>
+        <nav>
+            <a href="#explore">Explore</a>
+            <a href="#planner">Generator</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>The Grand Global Kitchen</h1>
+            <p>Dive deep into 55 iconic recipes cross-cutting beautiful African homelands and premier intercontinental delicacies styled dynamically.</p>
+        </div>
+    </section>
+
+    <section id="explore" class="controls-section">
+        <h2 class="section-title">Discover Our Menu</h2>
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterMenu('all', this)">All Recipes (55)</button>
+            <button class="filter-btn" onclick="filterMenu('breakfast', this)">🍳 Breakfast (15)</button>
+            <button class="filter-btn" onclick="filterMenu('lunch', this)">🌶️ Lunch (15)</button>
+            <button class="filter-btn" onclick="filterMenu('dinner', this)">🥩 Dinner (15)</button>
+            <button class="filter-btn" onclick="filterMenu('dessert', this)">🧁 Dessert (10)</button>
+        </div>
+    </section>
+
+    <main class="recipes-container">
+        <div class="recipe-grid" id="menu-grid">
+            </div>
+    </main>
+
+    <div class="modal-overlay" id="recipe-modal">
+        <div class="modal-box">
+            <button class="close-modal-btn" onclick="closeRecipe()">&times;</button>
+            <img src="" alt="" class="modal-header-img" id="modal-img">
+            <div class="modal-body">
+                <h2 class="modal-title" id="modal-title"></h2>
+                <div class="modal-meta" id="modal-meta"></div>
+                <p id="modal-desc" style="color:#666; font-style:italic; margin-bottom:15px;"></p>
+                
+                <h4 class="modal-subtitle">Ingredients Needed</h4>
+                <ul id="modal-ingredients"></ul>
+                
+                <h4 class="modal-subtitle">Preparation Steps</h4>
+                <ol id="modal-steps"></ol>
+            </div>
+        </div>
+    </div>
+
+    <section id="planner" class="planner-section">
+        <div class="planner-box">
+            <h2>Dynamic 4-Course Day Generator</h2>
+            <p>Let our engine pick your premium culinary matches across world cuisines instantly!</p>
+            
+            <div class="planner-display">
+                <div class="plan-row"><strong>Breakfast Match:</strong> <span id="roll-brk">---</span></div>
+                <div class="plan-row"><strong>Lunch Match:</strong> <span id="roll-lnc">---</span></div>
+                <div class="plan-row"><strong>Dinner Match:</strong> <span id="roll-din">---</span></div>
+                <div class="plan-row"><strong>Sweet Finish:</strong> <span id="roll-des">---</span></div>
+            </div>
+
+            <button id="roll-dice-btn">Shuffle Cuisine Deck 🎲</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 BiteCraft Global Masterclass. High-Performance Portfolio Compilation.</p>
+    </footer>
+
+
+    <script>
+        // Data Bank holding exactly 55 structured entries with detailed instruction maps
+        const recipeDatabase = [
+            // ================= BREAKFAST (15 Recipes) =================
+            { 
+                id: 0, title: "Nigerian Akara & Pap", cat: "breakfast", type: "African", 
+                desc: "Crispy golden bean fritters fried to airy perfection, paired with smooth cornmeal pudding.", 
+                img: "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?q=80&w=400",
+                ingredients: ["Peeled brown beans", "Habanero pepper (Atarodo)", "Onions", "Salt", "Vegetable oil for frying", "Corn starch wrapper (for Pap)"],
+                steps: ["Blend peeled beans with minimal water, onions, and pepper until thick.", "Whisk vigorously for 5 minutes to incorporate air.", "Season with salt, then scoop into deep hot oil.", "Fry until golden brown and serve with hot prepared smooth Pap slurry."]
+            },
+            { 
+                id: 1, title: "Classic Shakshuka", cat: "breakfast", type: "African", 
+                desc: "North African poached eggs nestled inside a fiery spiced tomato, onion, and chili reduction.", 
+                img: "https://images.unsplash.com/photo-1590412200988-a436bb705300?q=80&w=400",
+                ingredients: ["Eggs", "Fresh tomatoes", "Bell peppers", "Garlic", "Cumin", "Paprika", "Olive oil"],
+                steps: ["Saute diced onions, garlic, and sliced bell peppers in olive oil.", "Add crushed tomatoes, paprika, cumin, salt, and let simmer to form a rich sauce.", "Create small wells in the mixture and crack eggs directly inside.", "Cover tightly and cook on low heat until egg whites set cleanly."]
+            },
+            { 
+                id: 2, title: "South African Amasi Scones", cat: "breakfast", type: "African", 
+                desc: "Rich and ultra-fluffy traditional morning tea scones prepared with cultured sour milk.", 
+                img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400",
+                ingredients: ["Flour", "Butter", "Sugar", "Baking powder", "Amasi (cultured sour milk)", "Egg wash"],
+                steps: ["Rub cold butter cuboids into sifted flour, baking powder, and sugar.", "Bind gently with fresh Amasi milk until a soft dough comes together.", "Roll out gently on a floured surface and cut into clean circular discs.", "Bake at 180C for 15 minutes until top turns smooth golden brown."]
+            },
+            { 
+                id: 3, title: "East African Mandazi", cat: "breakfast", type: "African", 
+                desc: "Fluffy, pillow-soft triangular donuts enriched with coconut milk and hints of ground cardamom.", 
+                img: "https://images.unsplash.com/photo-1541532713592-79a0317b6b77?q=80&w=400",
+                ingredients: ["Flour", "Coconut milk", "Sugar", "Yeast", "Ground cardamom", "Oil"],
+                steps: ["Mix flour, cardamom, sugar, and dry yeast thoroughly.", "Add warm coconut milk gradually to form a non-sticky pliable dough.", "Let rest for 45 minutes until risen.", "Cut into clean triangles and flash-fry in deep warm vegetable oil."]
+            },
+            { 
+                id: 4, title: "Moroccan Khobz with Mint Tea", cat: "breakfast", type: "African", 
+                desc: "Crusty anise-seeded flatbread served fresh alongside hot poured sweet spearmint green tea.", 
+                img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=400",
+                ingredients: ["Semolina flour", "Yeast", "Anise seeds", "Warm water", "Green tea leaves", "Fresh mint"],
+                steps: ["Knead semolina flour with yeast, water, and anise seeds until smooth.", "Shape into flattened round round structures and let rise completely.", "Bake until crusty on top.", "Steep green tea leaves with massive bundles of fresh mint and sugar; serve boiling hot."]
+            },
+            { 
+                id: 5, title: "Fluffy Banana Pancakes", cat: "breakfast", type: "Intercontinental", 
+                desc: "Thick sweet buttermilk griddle cakes topped cleanly with fresh sliced yellow bananas and honey.", 
+                img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=400",
+                ingredients: ["Ripe Bananas", "Flour", "Buttermilk", "Eggs", "Baking powder", "Maple syrup"],
+                steps: ["Mash ripe bananas until liquid smooth.", "Whisk in eggs and buttermilk cleanly.", "Fold into flour and baking powder dry mixture.", "Pour circles onto a oiled hot skillet, flip when bubbles form, and stack high with honey."]
+            },
+            { 
+                id: 6, title: "French Eggs Benedict", cat: "breakfast", type: "Intercontinental", 
+                desc: "Poached eggs and smoked turkey over toasted English muffins under warm, buttery Hollandaise.", 
+                img: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=400",
+                ingredients: ["Eggs", "English Muffins", "Smoked Turkey slices", "Butter", "Egg yolks", "Lemon juice"],
+                steps: ["Whisk egg yolks and lemon juice over a double boiler, slowly streaming in melted butter to form Hollandaise.", "Poach fresh eggs in barely simmering vinegar water.", "Toast split muffins and layer with seared turkey slices.", "Top with the poached eggs and pour heavy warm Hollandaise over everything."]
+            },
+            { 
+                id: 7, title: "Avocado Sourdough Toast", cat: "breakfast", type: "Intercontinental", 
+                desc: "Artisanal crusty sourdough layered with crushed lime avocado, chili flakes, and pumpkin seeds.", 
+                img: "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?q=80&w=400",
+                ingredients: ["Sourdough bread slices", "Ripe Avocados", "Lime juice", "Chili flakes", "Pumpkin seeds"],
+                steps: ["Toast sourdough bread slices until deeply crispy.", "Mash avocado flesh with lime juice, sea salt, and black pepper.", "Spread thick over the warm toast elements.", "Garnish with red pepper chili flakes and toasted pumpkin seeds."]
+            },
+            { 
+                id: 8, title: "Belgian Sugar Waffles", cat: "breakfast", type: "Intercontinental", 
+                desc: "Crisp yeast-risen waffles filled with caramelized pearl sugar pockets and whipped cream.", 
+                img: "https://images.unsplash.com/photo-1562376502-6f769499c886?q=80&w=400",
+                ingredients: ["Flour", "Yeast", "Pearl sugar crystals", "Eggs", "Melted butter"],
+                steps: ["Make a thick yeast batter and let rest until doubled in volume.", "Fold in structural pearl sugar crystals carefully right before cooking.", "Ladle into hot seasoned waffle iron grid chambers.", "Cook until the pearl sugar caramelizes out into a glassy brown outer crunch."]
+            },
+            { 
+                id: 9, title: "Smoked Salmon Bagel", cat: "breakfast", type: "Intercontinental", 
+                desc: "Toasted New York style bagel smeared thick with garlic cream cheese, capers, and cured salmon.", 
+                img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=400",
+                ingredients: ["Bagels", "Smoked Salmon slices", "Cream cheese", "Garlic powder", "Capers"],
+                steps: ["Slice bagel horizontally and toast golden.", "Mix garlic powder into rich softened cream cheese spread.", "Lather cream cheese across both hot interior bagel rings.", "Drape luxury smoked salmon ribbons on top and sprinkle with pickled capers."]
+            },
+            { 
+                id: 10, title: "Acai Superfood Bowl", cat: "breakfast", type: "Intercontinental", 
+                desc: "Chilled pureed Brazilian acai berries blended with almond milk, topped with dynamic organic granola.", 
+                img: "https://images.unsplash.com/photo-1590301157890-4810ed352733?q=80&w=400",
+                ingredients: ["Frozen Acai berry pulp", "Almond milk", "Frozen strawberries", "Granola", "Chia seeds"],
+                steps: ["Blend acai pulp, frozen berries, and a splash of almond milk until thick like soft-serve ice cream.", "Spoon mixture down into wide deep breakfast bowls.", "Arrange straight geometric lines of premium granola, pumpkin seeds, and chia seeds on top."]
+            },
+            { 
+                id: 11, title: "Spanish Potato Tortilla", cat: "breakfast", type: "Intercontinental", 
+                desc: "A dense, olive-oil slow-cooked omelet loaded structural with sliced golden potatoes and sweet onions.", 
+                img: "https://images.unsplash.com/photo-1574969884448-fe5bce3d0d51?q=80&w=400",
+                ingredients: ["Potatoes", "Onions", "Eggs", "Abundant Olive Oil", "Salt"],
+                steps: ["Slice potatoes and onions wafer-thin.", "Poach gently inside plenty of warm olive oil until soft but not browned; drain well.", "Beat eggs with salt, and stir in warm potato mixture.", "Pour back into hot pan skillet, cook until base sets, flip cleanly with a flat plate to brown the reverse side."]
+            },
+            { 
+                id: 12, title: "English Fry-Up Breakfast", cat: "breakfast", type: "Intercontinental", 
+                desc: "Hearty combo plate featuring fried farm eggs, baked beans, grilled mushrooms, and seared tomatoes.", 
+                img: "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?q=80&w=400",
+                ingredients: ["Eggs", "Baked beans canned", "Mushrooms", "Tomatoes", "Sausages", "Toast"],
+                steps: ["Pan-sear sausages and remove.", "In the same oil grease, fry mushrooms and halved tomatoes faces-down.", "Warm up seasoned baked beans over a tiny pot.", "Fry fresh eggs cleanly; assemble everything together as a giant multi-component plate."]
+            },
+            { 
+                id: 13, title: "Blueberry Croissant Bake", cat: "breakfast", type: "Intercontinental", 
+                desc: "Flaky buttery croissants baked sweet in a rich vanilla-custard reduction with wild berries.", 
+                img: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?q=80&w=400",
+                ingredients: ["Stale Croissants", "Blueberries", "Eggs", "Heavy cream", "Sugar", "Vanilla extraction"],
+                steps: ["Tear stale croissants into large chunks and arrange inside a buttered baking tray dish.", "Scatter loose fresh blueberries across the gaps.", "Whisk eggs, heavy cream, sugar, and vanilla together; pour over croissants.", "Bake at 175C for 25 minutes until top custard puffs completely."]
+            },
+            { 
+                id: 14, title: "Fluffy Japanese Souffle Omelet", cat: "breakfast", type: "Intercontinental", 
+                desc: "Whipped egg whites folded together carefully and pan-cooked into a cloud-like sweet-savory pillow.", 
+                img: "https://images.unsplash.com/photo-1494597564530-871f2b93ac55?q=80&w=400",
+                ingredients: ["Eggs", "Butter", "Salt", "Sugar", "White pepper"],
+                steps: ["Separate eggs carefully.", "Whip egg whites into super stiff glassy peaks with a touch of sugar.", "Gently fold whipped whites back into salted yolks without popping air cells.", "Cook covered in a low-heat buttered skillet for 5 minutes, then fold in half cleanly."]
+            },
+
+            // ================= LUNCH (15 Recipes) =================
+            { 
+                id: 15, title: "Classic Nigerian Jollof Rice", cat: "lunch", type: "African", 
+                desc: "Vibrant long-grain rice parboiled directly within a smoky habanero, bell pepper, and tomato stock.", 
+                img: "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?q=80&w=400",
+                ingredients: ["Long-grain parboiled rice", "Tomato paste", "Tatashe (Red bell pepper)", "Atarodo", "Onions", "Meat stock", "Bay leaves"],
+                steps: ["Blend peppers and onions, then boil down to remove liquid excess.", "Fry tomato paste and pepper blend in oil with onions until fragrant.", "Add seasoned meat stock, curry, thyme, and bay leaves; bring to boiling point.", "Add washed rice, cover tightly with foil, cook on low heat to achieve that signature party smoke taste."]
+            },
+            { 
+                id: 16, title: "Ghanian Waakye Plate", cat: "lunch", type: "African", 
+                desc: "Nutritious rice and beans cooked with sun-dried sorghum leaves, served alongside spicy shito sauce.", 
+                img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400",
+                ingredients: ["Black-eyed beans", "Rice", "Sorghum bicolour leaves (Waakye leaves)", "Salt", "Shito black pepper sauce"],
+                steps: ["Boil beans with dry sorghum leaves until beans start softening.", "Add washed rice into the same purple-stained water mix.", "Simmer until both grains turn thoroughly soft and purple-brown.", "Serve with dark spicy Shito, boiled eggs, and spaghetti sides."]
+            },
+            { 
+                id: 17, title: "Senegalese Thieboudienne", cat: "lunch", type: "African", 
+                desc: "The ultimate ancestral one-pot rice recipe layered with herb-stuffed fish slices and cassava blocks.", 
+                img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400",
+                ingredients: ["White Fish fillets", "Parsley stuffed paste", "Broken rice grains", "Carrots", "Cassava tubers", "Tomato puree"],
+                steps: ["Stuff fish fillets with a blended paste of parsley, garlic, and chili; sear in oil and remove.", "Cook tomato puree and onions in the same fish oil medium.", "Drop in heavy cut root vegetables and boil inside deep water broth.", "Remove veggies, pour broken rice into concentrated red liquid, steam low till cooked."]
+            },
+            { 
+                id: 18, title: "Cameroonian Ndole", cat: "lunch", type: "African", 
+                desc: "Creamy stewed bitterleaves cooked meticulously with fresh ground peanuts, crayfish, and tender beef.", 
+                img: "https://images.unsplash.com/photo-1515516969-d4008cc6241a?q=80&w=400",
+                ingredients: ["Washed bitterleaves", "Raw peanuts skinless", "Crayfish ground", "Beef chunks", "Onions", "Hot oil seasoning"],
+                steps: ["Boil skinless raw peanuts in water for 5 minutes, then blend into a creamy fine paste.", "Cook seasoned beef until tender.", "Add peanut paste and crayfish to the pot; simmer low until thick.", "Stir in washed bitterleaves, then finish with a pour of sizzling hot onion oil on top."]
+            },
+            { 
+                id: 19, title: "South African Bunny Chow", cat: "lunch", type: "African", 
+                desc: "A hollowed-out half loaf of white bread overflowing with explosive Durban lamb curry sauce.", 
+                img: "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?q=80&w=400",
+                ingredients: ["Loaf of white bread unsliced", "Lamb meat diced", "Durban curry powder mix", "Potatoes", "Ginger garlic paste"],
+                steps: ["Fry onions, ginger, garlic, and spicy heavy Durban curry mix together.", "Add lamb chunks and seal surface; let release juices.", "Drop in potato cubes and water; stew down till curry becomes extra thick and gravy-rich.", "Cut bread loaf in half, hollow out the soft center bread crumb, and ladle curry into the crust cave bowl."]
+            },
+            { 
+                id: 20, title: "Italian Fettuccine Alfredo", cat: "lunch", type: "Intercontinental", 
+                desc: "Ribbon pasta tossed gently in a velvet emulsion of heavy cream, aged Parmigiano, and garlic.", 
+                img: "https://images.unsplash.com/photo-1645112411341-6c4fd023714a?q=80&w=400",
+                ingredients: ["Fettuccine pasta", "Heavy cream", "Butter", "Parmigiano-Reggiano cheese", "Garlic cloves"],
+                steps: ["Boil fettuccine pasta in heavily salted water until al dente.", "Melt butter inside wide deep skillets and saute minced garlic lightly.", "Pour in heavy cream and bring to a lazy bubble simmer.", "Toss pasta directly into cream along with handfuls of grated cheese; stir vigorously to create emulsion paste."]
+            },
+            { 
+                id: 21, title: "Mexican Grilled Chicken Tacos", cat: "lunch", type: "Intercontinental", 
+                desc: "Street-style corn tortillas stacked with charred chicken breast, fresh cilantro, and diced onions.", 
+                img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=400",
+                ingredients: ["Corn tortillas", "Chicken breast", "Lime juice", "Coriander cilantro", "Onions", "Cumin seasoning"],
+                steps: ["Marinate chicken breast in lime juice, cumin, garlic, and oil.", "Grill over high charcoal heat until charred and sliced small.", "Char corn tortillas over direct burner flames.", "Assemble by loading chicken, fine diced raw onions, and loaded cilantro springs inside."]
+            },
+            { 
+                id: 22, title: "Japanese Pork Katsu Curry", cat: "lunch", type: "Intercontinental", 
+                desc: "Crispy panko-breaded cutlet slice laid over premium short-grain rice bathed in sweet brown curry.", 
+                img: "https://images.unsplash.com/photo-1626804475315-9644b37a2fe4?q=80&w=400",
+                ingredients: ["Pork or chicken cutlets", "Panko breadcrumbs", "Flour", "Eggs", "Japanese curry block roux", "Short grain rice"],
+                steps: ["Dredge cutlet inside flour, egg wash, and coat thick with crunchy panko crumbs.", "Deep fry until golden crisp and slice diagonally.", "Boil potatoes and carrots, melt Japanese curry blocks into water to form thick sweet gravy sauce.", "Lay sliced katsu over hot rice and flood side area with the sweet brown curry sauce."]
+            },
+            { 
+                id: 23, title: "Classic Caesar Salad", cat: "lunch", type: "Intercontinental", 
+                desc: "Crisp romaine greens massaged in anchovy-garlic emulsion, finished with heavy toasted croutons.", 
+                img: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?q=80&w=400",
+                ingredients: ["Romaine lettuce heads", "Caesar dressing bottle or homemade", "Parmesan shards", "Croutons", "Black pepper"],
+                steps: ["Wash romaine lettuce stalks thoroughly inside ice water and spin bone dry.", "Chop into wide leafy bite segments.", "Toss inside large steel bowls with thick Caesar anchovy-parmesan dressing blend.", "Top generously with toasted garlic bread croutons and premium black pepper cracks."]
+            },
+            { 
+                id: 24, title: "Thai Drunken Noodles (Pad Kee Mao)", cat: "lunch", type: "Intercontinental", 
+                desc: "Broad rice noodles stir-fried on blazing heat with sweet basil, fresh chili paste, and soy glaze.", 
+                img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=400",
+                ingredients: ["Broad flat rice noodles", "Thai Holy Basil", "Bird's eye chilies", "Dark soy sauce", "Oyster sauce", "Garlic"],
+                steps: ["Pound bird's eye chilies and garlic into a coarse rustic paste.", "Flash fry paste in roaring hot wok until fragrant.", "Drop in softened broad rice noodles and quick sliced protein strips.", "Drizzle sweet dark soy sauce and oyster sauce mix, then fold in massive bundles of basil at final seconds."]
+            },
+            { 
+                id: 25, title: "American Deluxe Cheeseburger", cat: "lunch", type: "Intercontinental", 
+                desc: "Flame-broiled beef patty with melted cheddar, crisp lettuce, pickles, and dynamic home sauce.", 
+                img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=400",
+                ingredients: ["Ground beef 80/20 mix", "Burger buns", "Cheddar cheese slices", "Pickles", "Lettuce", "Mayo-Ketchup sauce"],
+                steps: ["Shape ground beef gently into flat circular discs without compacting tight.", "Sear on blistering hot cast iron pan for 3 minutes per side to build crust cake.", "Lay cheese slice over patty in final minute and cover to melt down.", "Toast buns, smear home sauce, layer pickles, lettuce, and place the juicy beef patty straight in."]
+            },
+            { 
+                id: 26, title: "Mediterranean Falafel Wrap", cat: "lunch", type: "Intercontinental", 
+                desc: "Warm pita flatbread rolling up golden herb chickpea balls, pickled cabbage, and tahini sauce.", 
+                img: "https://images.unsplash.com/photo-1547058886-af87d4801a62?q=80&w=400",
+                ingredients: ["Soaked raw chickpeas", "Parsley & Cilantro leaves", "Garlic", "Pita wraps", "Tahini sesame paste", "Pickled cabbage"],
+                steps: ["Process raw soaked chickpeas, garlic, onions, spices, and green herbs inside food processor to a fine sand texture.", "Shape into little spherical balls and fry deep till outer crunch shell darkens.", "Warm pita breads up inside pans.", "Lay falafel balls, squish flat slightly, wrap with pickled cabbage and drizzle with nutty water-thinned Tahini."]
+            },
+            { 
+                id: 27, title: "Vietnamese Shrimp Pho", cat: "lunch", type: "Intercontinental", 
+                desc: "Clear bone broth infused with star anise and ginger, packed with translucent noodles and herbs.", 
+                img: "https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=400",
+                ingredients: ["Beef or chicken bone stock", "Pho spice bundle (Star anise, clove, cinnamon)", "Rice noodles", "Fresh shrimps", "Bean sprouts"],
+                steps: ["Char ginger and onions over flames; boil inside deep bone broth along with toasted spice bundle for 3 hours.", "Filter broth until crystal clear and boiling hot.", "Place soft cooked rice noodles and raw clean shrimps down into deep serving bowl frames.", "Ladle boiling hot soup broth directly over bowl; heat will flash cook shrimp instantly. Top with sprouts."]
+            },
+            { 
+                id: 28, title: "Greek Lemon Chicken Gyro", cat: "lunch", type: "Intercontinental", 
+                desc: "Skillet-seared lemon oregano chicken strips wrapped up with cool cucumber-yogurt Tzatziki sauce.", 
+                img: "https://images.unsplash.com/photo-1626700051175-6518c4793f4f?q=80&w=400",
+                ingredients: ["Chicken thighs", "Dried oregano", "Lemon juice", "Greek yogurt", "Grated cucumber", "Flatbread pita"],
+                steps: ["Marinate chicken inside lemon juice, olive oil, garlic, and oregano; sear till cooked and slice up.", "Make Tzatziki: Mix thick yogurt, squeezed dry grated cucumber meat, garlic, salt, and olive oil.", "Toast flatbread soft.", "Assemble chicken strips inside flatbread, load diced fresh tomatoes and slap Tzatziki on top thick."]
+            },
+            { 
+                id: 29, title: "Indian Paneer Butter Masala", cat: "lunch", type: "Intercontinental", 
+                desc: "Firm cottage cheese cubes swimming inside a rich, silky sweet gravy of cashews and tomatoes.", 
+                img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=400",
+                ingredients: ["Paneer cheese blocks", "Tomatoes", "Cashew nuts", "Butter", "Garam masala", "Heavy cream"],
+                steps: ["Boil tomatoes and cashews together, then blend into an ultra smooth fine milk slurry paste.", "Melt massive blocks of butter in pan, add ginger paste, and pour in tomato cashew puree base.", "Simmer with warm Indian spices until oil separates on the edges.", "Slide paneer cottage cheese cubes in, cook for 5 minutes, finish with heavy cream swirls."]
+            },
+
+            // ================= DINNER (15 Recipes) =================
+            { 
+                id: 30, title: "Pounded Yam & Egusi Soup", cat: "dinner", type: "African", 
+                desc: "Smooth doughy pounded yam paired with melon seed soup enriched with spinach, tripe, and stockfish.", 
+                img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=400",
+                ingredients: ["White yam tubers", "Ground Egusi (melon seeds)", "Palm oil", "Beef tripe (shaki)", "Stockfish", "Fresh chopped spinach", "Crayfish"],
+                steps: ["Boil yam pieces till very soft, pound thoroughly inside mortar or machine till smooth, stretchy and doughy.", "Mix ground egusi with onion water to form thick doughy paste clumps.", "Heat palm oil, add onion, fry egusi clumps on low heat till expanded cookie textures form.", "Pour in meat stockfish boil mix, drop spinach, simmer low till soup binds together perfectly."]
+            },
+            { 
+                id: 31, title: "Kenyan Sukuma Wiki & Ugali", cat: "dinner", type: "African", 
+                desc: "Stiff white cornmeal mash served with savory sauteed collard greens and slow-stewed beef cubes.", 
+                img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=400",
+                ingredients: ["White cornmeal flour", "Collard greens (Sukuma)", "Tomatoes diced", "Onions", "Beef chucks", "Water"],
+                steps: ["Bring water to rolling boil; gradually stir in white cornmeal flour, mashing hard against pan walls to create dense stiff smooth lump cake.", "Saute sliced onions and chopped collard greens inside oil skillet.", "Add diced tomatoes, salt, cover to steam greens down without losing color.", "Serve hot cake wedges side-by-side with greens and fried beef strips."]
+            },
+            { 
+                id: 32, title: "Eritrean Zigni Stew with Injera", cat: "dinner", type: "African", 
+                desc: "Spicy beef comfort stew packed with fiery Berbere spice, scooped with spongy fermented flatbread.", 
+                img: "https://images.unsplash.com/photo-1585238342024-78d387f4a707?q=80&w=400",
+                ingredients: ["Beef cubes", "Berbere spice blend", "Pureed onions massive amount", "Niter Kibbeh spiced butter", "Injera flatbread crêpe"],
+                steps: ["Slow cook pureed onions inside dry pot for 30 minutes without oil till water completely leaves paste.", "Add aromatic Niter Kibbeh butter and heavy spoonfuls of Berbere red powder spice.", "Drop beef cubes in, add stock splash, simmer extra low for 1.5 hours until meat fibers melt loose.", "Serve poured over massive spongy flat Injera crêpe plates."]
+            },
+            { 
+                id: 33, title: "Angolan Muamba de Galinha", cat: "dinner", type: "African", 
+                desc: "A aromatic slow-cooked chicken stew prepared using rich palm cream, squash, and fresh okra.", 
+                img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400",
+                ingredients: ["Chicken thighs pieces", "Palm oil concentrate soup cream", "Butternut squash pieces", "Fresh okra fingers", "Garlic cloves"],
+                steps: ["Marinate chicken chunks in heavy mashed garlic, salt, and chili powder blends.", "Brown chicken inside deep pot base; pour over pure concentrate palm cream paste fluid.", "Drop in chopped butternut squash pieces and sliced whole okra pods.", "Simmer covered for 45 minutes until the squash dissolves slightly to thicken up soup stock."]
+            },
+            { 
+                id: 34, title: "North African Lamb Couscous", cat: "dinner", type: "African", 
+                desc: "Steamed semolina grains topped elegantly with fall-off-the-bone lamb shanks and root vegetables.", 
+                img: "https://images.unsplash.com/photo-1539755530862-03f62150a49e?q=80&w=400",
+                ingredients: ["Couscous semolina grains", "Lamb shanks", "Chickpeas", "Zucchini", "Carrots", "Ras el Hanout spice"],
+                steps: ["Sear lamb shanks with Ras el Hanout inside deep stock pot; cover with water and simmer low for 2 hours.", "Drop large block cut carrots, zucchini, and chickpeas inside broth final 30 minutes.", "Steam couscous semolina granules inside perforated pot basket over the bubbling aromatic lamb soup steam.", "Fluff grains with butter, pile onto platter, lay lamb shank in center and encircle with veggies."]
+            },
+            { 
+                id: 35, title: "French Garlic Herb Ribeye Steak", cat: "dinner", type: "Intercontinental", 
+                desc: "Pan-seared prime beef basted continuously with foaming butter, crushed garlic, and fresh rosemary.", 
+                img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400",
+                ingredients: ["Ribeye beef steak thick-cut", "Butter block", "Garlic cloves", "Fresh rosemary & thyme stalks", "Black pepper"],
+                steps: ["Bring ribeye steak strictly to room temperature; dry surface with towels and season heavy with coarse salt.", "Sear inside smoking hot cast iron skillet pan for 2.5 minutes without moving to build heavy dark crust.", "Flip steak over, drop butter block, crushed whole garlic cloves, and herb stems directly into pan pan space.", "Tilt pan down and spoon foaming brown liquid continuous across steak surface for 2 minutes; rest meat before cutting."]
+            },
+            { 
+                id: 36, title: "Seafood Seafood Paella", cat: "dinner", type: "Intercontinental", 
+                desc: "Spanish saffron-infused rice cooked over wide pans with giant prawns, mussels, and calamari.", 
+                img: "https://images.unsplash.com/photo-1534080564583-6be75777b70a?q=80&w=400",
+                ingredients: ["Bomba Spanish rice", "Saffron threads", "Jumbo prawns", "Mussels shells", "Calamari rings", "Seafood broth"],
+                steps: ["Steep saffron threads inside warm rich fish seafood stock.", "Sauté onions, garlic, and chopped bell pepper inside wide flat circular Paella pan base.", "Stir in Bomba rice grain dry to absorb oil grease, then flood with the gold saffron stock fluid.", "Do not stir anymore! Arrange prawns, mussels, squid across rice surface; simmer till bottom forms crispy rice crust layer (Socarrat)."]
+            },
+            { 
+                id: 37, title: "Creamy Tuscan Salmon", cat: "dinner", type: "Intercontinental", 
+                desc: "Pan-fried pink salmon fillets simmering inside a luxurious sun-dried tomato and baby spinach cream.", 
+                img: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=400",
+                ingredients: ["Salmon fillets skin-on", "Sun-dried tomatoes", "Baby spinach leaves", "Heavy whipping cream", "Parmesan grated"],
+                steps: ["Sear salmon fillets in hot pan skin-down first till crispy; flip, flash cook interior and remove.", "In same pan space, fry chopped sun-dried tomatoes and minced garlic.", "Pour heavy cream, add cheese flakes, bring to clean boil reduction simmer.", "Drop spinach until wilted, slide salmon back down into pink sauce cream cream to combine coat."]
+            },
+            { 
+                id: 38, title: "Chinese Peking Duck with Hoisin", cat: "dinner", type: "Intercontinental", 
+                desc: "Crispy-skinned roast duck slices served with thin wheat pancakes, scallions, and sticky sweet glaze.", 
+                img: "https://images.unsplash.com/photo-1525755662778-989d0524087e?q=80&w=400",
+                ingredients: ["Whole duck", "Five spice powder", "Maltose syrup glaze", "Hoisin sauce sauce", "Scallions", "Thin duck pancakes"],
+                steps: ["Blanch whole duck skin with boiling water to tighten pores; brush skin thick with maltose soy syrup blend glaze.", "Hang duck inside draft dry room for 24 hours to dehydrate outer skin entirely.", "Roast vertical inside oven until fat renders completely out and skin turns thin paper glass crispy.", "Carve skin and thin meat strips; wrap up with hoisin paste glaze and scallion matchsticks inside small pancakes."]
+            },
+            { 
+                id: 39, title: "Slow-Braised Italian Osso Buco", cat: "dinner", type: "Intercontinental", 
+                desc: "Cross-cut veal shanks braised tenderly with white wine, aromatic mirepoix, and lemon zest garnish.", 
+                img: "https://images.unsplash.com/photo-1514516345957-556ca7d90a29?q=80&w=400",
+                ingredients: ["Cross-cut veal shanks marrowbone", "White wine dry", "Carrots", "Celery", "Canned tomatoes", "Lemon zest parsley (Gremolata)"],
+                steps: ["Dredge veal shanks inside flour; sear inside heavy dutch oven until all perimeter surfaces brown deep.", "Remove meat, fry minced onion, carrots, celery inside fat oil remaining.", "Deglaze pot base clean with dry white wine; pour crushed tomatoes and return veal shanks down vertical.", "Cover tightly and oven-braise at 150C for 3 full hours; top with fresh parsley lemon Gremolata sprinkle right at table."]
+            },
+            { 
+                id: 40, title: "Japanese Sushi Roll Masterclass", cat: "dinner", type: "Intercontinental", 
+                desc: "Nori sheets rolling seasoned sushi rice, fresh premium raw tuna slices, and avocado matchsticks.", 
+                img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=400",
+                ingredients: ["Sushi rice short grain", "Rice vinegar seasoning", "Nori seaweed sheets", "Sashimi grade raw Tuna", "Avocado", "Bamboo mat wrap"],
+                steps: ["Wash sushi rice 5 times, cook clean, fold gently with sweet rice vinegar seasoning while cooling with fan.", "Lay dark nori sheet down onto bamboo rolling mat structure.", "Press thin uniform layer of sticky rice across nori, leaving top margins empty.", "Place center tracks of raw tuna slices and avocado strips; lift mat edge and roll forward firm. Cut with wet knife."]
+            },
+            { 
+                id: 41, title: "Indian Butter Chicken & Naan", cat: "dinner", type: "Intercontinental", 
+                desc: "Tandoori-spiced chicken chunks integrated smoothly into a rich cream, tomato, and ghee curry.", 
+                img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?q=80&w=400",
+                ingredients: ["Chicken thighs pieces", "Yogurt marinade", "Ghee clear butter", "Tomato paste purée", "Kashmiri chili powder", "Heavy cream"],
+                steps: ["Marinate chicken inside spiced yogurt mixture; broil high or grill until charred edge spots form.", "Melt clear ghee grease, saute spices, add pureed tomato paste base and simmer 15 minutes.", "Blend sauce smooth with hand blender, slide charcoal chicken pieces straight into gravy cream.", "Pour heavy cream drops and serve hot with clay-oven charred garlic Naan flatbreads."]
+            },
+            { 
+                id: 42, title: "Moroccan Tagine of Lamb & Prunes", cat: "dinner", type: "African", 
+                desc: "Slow clay-pot stew pairing sweet honeyed prunes, toasted almonds, and extremely tender lamb chunks.", 
+                img: "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?q=80&w=400",
+                ingredients: ["Lamb shoulder meat pieces", "Dried prunes", "Honey", "Cinnamon stick", "Toasted blanched almonds", "Ginger powder"],
+                steps: ["Arrange lamb chunks inside conical clay Tagine base along with oil, onions, ginger, and saffron water.", "Cover with heavy ceramic cone top and cook over low gas ring for 2 hours.", "Simmer dried prunes inside separate pan with water, honey, and cinnamon stick until sweet syrup forms.", "Uncover tagine, lay plump sweet prunes across meat mounds, and decorate with crunchy toasted almonds."]
+            },
+            { 
+                id: 43, title: "Southern Crispy Fried Chicken", cat: "dinner", type: "Intercontinental", 
+                desc: "Double-dredged buttermilk chicken pieces deep fried crunchy, served with homestyle gravy.", 
+                img: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?q=80&w=400",
+                ingredients: ["Chicken bone-in pieces", "Buttermilk", "Flour spice mix", "Garlic powder", "Cayenne pepper", "Deep frying oil"],
+                steps: ["Submerge chicken pieces inside salted spiced buttermilk container for 12 hours inside fridge.", "Mix flour with heavy starch, garlic powder, onion powder, and pepper grains.", "Dredge chicken inside flour, dip back into buttermilk quickly, coat thick inside flour second time for extra crunch skin flakes.", "Fry inside deep 175C vegetable oil vat for 14 minutes until center registers safe cook."]
+            },
+            { 
+                id: 44, title: "Oven-Roasted Lobster Tails", cat: "dinner", type: "Intercontinental", 
+                desc: "Succulent cold-water lobster tails broiled high under a pool of melted lemon chive butter.", 
+                img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=400",
+                ingredients: ["Lobster tails whole", "Butter unsalted", "Lemon juice juice", "Fresh chives chopped", "Paprika dusting"],
+                steps: ["Using kitchen scissors, slice open top center lobster shell armor down to tail base.", "Lift raw white lobster meat upward through crack, letting it rest piggy-back style on top closed shell walls.", "Brush meat completely with melted butter fluid and dust lightly with red sweet paprika.", "Broil high inside oven for 6 minutes till opaque white; serve side saucers of hot lemon chive butter dip."]
+            },
+
+            // ================= DESSERT (10 Recipes) =================
+            { 
+                id: 45, title: "South African Malva Pudding", cat: "dessert", type: "African", 
+                desc: "A sweet apricot jam sponge cake baked soft, served swimming completely under warm vanilla cream.", 
+                img: "https://images.unsplash.com/photo-1587314168485-3236d6710814?q=80&w=400",
+                ingredients: ["Apricot jam", "Flour", "Sugar", "Butter", "Baking soda", "Heavy cream cream syrup mix"],
+                steps: ["Whisk sugar and eggs, fold inside melted butter, apricot jam spoon, and flour soda milk mixture slurry.", "Bake sponge mass inside square dish container for 25 minutes until top browns deep.", "Boil heavy cream, sugar, and vanilla over stove to create hot fluid saturation syrup wash.", "Poke hundred holes across hot baked cake surface, pour boiling cream syrup across till completely drunken soaked."]
+            },
+            { 
+                id: 46, title: "Nigerian Sweet Chin Chin Grid", cat: "dessert", type: "African", 
+                desc: "Crunchy, sweet fried pastry bites scented heavily with nutmeg, optimal for snacks or treats.", 
+                img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400",
+                ingredients: ["Flour flour", "Sugar", "Butter", "Egg", "Ground Nutmeg powder heavy", "Milk"],
+                steps: ["Sift flour, sugar, and heavy nutmeg powder; rub cold butter bars inside to create fine sand texture crumbs.", "Bind dough ball with egg wash and fluid milk drops till ultra stiff solid.", "Roll out dough sheet flat across table cutting boards ($2\text{mm}$ thickness max).", "Slice into tiny tiny geometric perfect square cubes; flash fry inside moderate hot oil till golden sand crisp."]
+            },
+            { 
+                id: 47, title: "Maroon Velvet Lava Cake", cat: "dessert", type: "Intercontinental", 
+                desc: "Rich chocolate sponge cake hiding a molten, deep-maroon dark cocoa center that flows freely.", 
+                img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=400",
+                ingredients: ["Dark chocolate bars", "Butter block", "Eggs", "Sugar", "Flour flour", "Burgundy maroon food color tone"],
+                steps: ["Melt rich dark chocolate and butter together inside glass bowl over boiling water pot base.", "Whisk eggs and sugar to thick pale foam; fold chocolate and velvet maroon color droplets gently inside.", "Incorporate flour slowly; grease individual ramekin cups with heavy cocoa powder dust layers.", "Bake at 200C for exactly 10 minutes; outer rim walls will set stiff while center chocolate heart remains pure molten fluid paste."]
+            },
+            { 
+                id: 48, title: "Classic Italian Tiramisu", cat: "dessert", type: "Intercontinental", 
+                desc: "Espresso-soaked ladyfingers layered structurally with whipped egg yolks and mascarpone cream.", 
+                img: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=400",
+                ingredients: ["Savoiardi ladyfinger biscuits", "Strong black Espresso coffee", "Mascarpone cheese pot", "Egg yolks", "Sugar", "Pure Cocoa powder powder"],
+                steps: ["Whisk egg yolks and sugar together, then beat in rich creamy thick Mascarpone cheese paste until velvet texture.", "Flash dip ladyfinger cookies into cool black concentrated espresso fluid ($1\text{ second}$ immersion maximum to prevent soggy breaking).", "Lay biscuits flat across glass dish floors, spread half the thick cheese cream blanket directly over them.", "Build second cookie layer, top with last cream layer, cover and fridge 8 hours. Dust heavy black cocoa powder sheets before cutting."]
+            },
+            { 
+                id: 49, title: "French Vanilla Creme Brulee", cat: "dessert", type: "Intercontinental", 
+                desc: "Rich silky custard base topped with a structural layer of hardened, blowtorched bitter caramel sugar.", 
+                img: "https://images.unsplash.com/photo-1516685018646-549198525c1b?q=80&w=400",
+                ingredients: ["Heavy cream", "Egg yolks only", "Sugar white", "Vanilla bean pod", "Caramelizing sugar extra"],
+                steps: ["Scrape interior caviar seeds out from vanilla bean pod; simmer inside deep heavy cream pot pan gently.", "Whisk egg yolks and white sugar inside bowl; gradually stream hot cream inside while whisking fast to prevent scrambling.", "Filter custard mixture through fine mesh, divide inside flat circular clay dishes, bake inside water bath matrix at 150C.", "Chill custard solid. Dust white sugar uniformly across cold top surface, ignite blowtorch flame, and blast sugar until it melts glassy hard."]
+            },
+            { 
+                id: 50, title: "New York Creamy Cheesecake", cat: "dessert", type: "Intercontinental", 
+                desc: "Dense graham cracker crust packed high with rich cream cheese filling, topped with strawberry coulis.", 
+                img: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400",
+                ingredients: ["Graham cracker crumbs", "Butter melted", "Cream cheese massive tubs", "Sugar", "Sour cream", "Eggs"],
+                steps: ["Press crushed cracker crumbs and melted butter down hard onto springform pan bases to form floor crust; bake 8 minutes.", "Beat blocks of full-fat room temperature cream cheese and sugar until absolute fluid cream without air pockets.", "Fold inside sour cream droplets and add eggs one by one on lowest mixer gear.", "Pour down over crust, bake inside deep water bath lines at 160C for 1 hour; cool inside turned-off oven slowly for zero cracks."]
+            },
+            { 
+                id: 51, title: "Warm Apple Tarte Tatin", cat: "dessert", type: "Intercontinental", 
+                desc: "Upside-down puff pastry tart displaying heavily caramelized apples cooked in brown sugar butter.", 
+                img: "https://images.unsplash.com/photo-1519915028121-75194a477fe9?q=80&w=400",
+                ingredients: ["Granny Smith crisp apples", "Butter block", "Sugar white", "Puff pastry circle sheet sheet"],
+                steps: ["Peel, core, and slice apples into fat heavy wedge chunks.", "Melt thick layer of butter and sugar inside heavy oven-safe copper skillet pan till dark copper amber caramel rolls.", "Pack apple wedges tight vertical circles inside bubbling sugar pan base; cook 15 minutes to soften down.", "Drape cold round puff pastry sheet completely over the apple skillet layout, tucking edges inwards. Bake 25 minutes, then invert upside down fast onto presentation plates."]
+            },
+            { 
+                id: 52, title: "Turkish Pistachio Baklava", cat: "dessert", type: "Intercontinental", 
+                desc: "Paper-thin layers of flaky phyllo pastry filled with crushed nuts, soaked deeply in honey syrup.", 
+                img: "https://images.unsplash.com/photo-1519654746577-bfe3a2bb8f36?q=80&w=400",
+                ingredients: ["Phyllo pastry sheets box", "Ghee clear butter melted", "Raw green pistachios shelled", "Honey sugar water syrup"],
+                steps: ["Process raw shelled pistachios into fine sand grains.", "Layer 10 sheets of tissue-thin phyllo inside metal trays, brushing melted clear ghee between every layer layer surface.", "Dump heavy sheets of green pistachio sand down, then cap with 10 more inter-buttered sheets of pastry covers.", "Cut diamond grids across uncooked tray with sharp blades; bake at 170C for 50 minutes. Flood immediate hot oven exit with cold clear honey syrup sheets."]
+            },
+            { 
+                id: 53, title: "Triple Chocolate Fudge Brownies", cat: "dessert", type: "Intercontinental", 
+                desc: "Dense, ultra-fudgy cocoa bars packed with semi-sweet chocolate chunks and topped with sea salt.", 
+                img: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?q=80&w=400",
+                ingredients: ["Butter block melted", "Cocoa powder dark", "Eggs", "Sugar white", "Flour splash", "Chocolate chunks chips"],
+                steps: ["Whisk melted butter and sugar aggressively for 2 minutes to guarantee shiny crackly brownie paper skins.", "Whisk eggs inside until paste turns glossy pale.", "Sift dark intense cocoa powder and minimal flour down; fold inside with rubber spatula handles.", "Throw handfuls of solid chocolate chips inside batter mass, bake at 175C for exactly 21 minutes to ensure dense moist center fudging."]
+            },
+            { 
+                id: 54, title: "Eton Mess Berry Parfait", cat: "dessert", type: "Intercontinental", 
+                desc: "A loose British classic mixing crushed crisp meringues, fresh raspberries, and double heavy cream.", 
+                img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=400",
+                ingredients: ["Baked hard meringue shells", "Fresh sweet Strawberries / Raspberries", "Heavy whipping cream", "Powdered sugar"],
+                steps: ["Mash half the fresh berries inside bowl with powdered sugar to create bright ruby fruit liquid coulis juice.", "Whip heavy cold cream into soft cloud peaks inside separate bowl.", "Using bare hands, crush baked dry hard meringue shells into messy large crystal shards.", "Gently fold meringue fragments and raw berry halves inside whipped cream; layer inside tall crystal cocktail glasses and drench with fruit coulis swirls."]
+            }
+        ];
+
+        // TARGET DOM CONTAINERS
+        const menuGrid = document.getElementById("menu-grid");
+        const rollBtn = document.getElementById("roll-dice-btn");
+        
+        // MODAL VIEW DOM OBJECT REFERENCES
+        const modalOverlay = document.getElementById("recipe-modal");
+        const modalImg = document.getElementById("modal-img");
+        const modalTitle = document.getElementById("modal-title");
+        const modalMeta = document.getElementById("modal-meta");
+        const modalDesc = document.getElementById("modal-desc");
+        const modalIngredients = document.getElementById("modal-ingredients");
+        const modalSteps = document.getElementById("modal-steps");
+
+        // RENDERING ENGINE FUNCTION
+        function displayRecipes(recipeArray) {
+            menuGrid.innerHTML = ""; // Clear view state
+            
+            recipeArray.forEach(recipe => {
+                const card = document.createElement("article");
+                card.className = "recipe-card";
+                
+                card.innerHTML = `
+                    <div class="card-img-wrapper">
+                        <img src="${recipe.img}" alt="${recipe.title}" class="recipe-img">
+                        <span class="region-tag">${recipe.type}</span>
+                    </div>
+                    <div class="card-content">
+                        <span class="category-tag">${recipe.cat}</span>
+                        <h3>${recipe.title}</h3>
+                        <p>${recipe.desc}</p>
+                        <button class="view-btn" onclick="openRecipe(${recipe.id})">Cook This</button>
+                    </div>
+                `;
+                menuGrid.appendChild(card);
+            });
+        }
+
+        // FILTER MANAGEMENT SYSTEM
+        function filterMenu(category, element) {
+            document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+            element.classList.add("active");
+
+            if (category === "all") {
+                displayRecipes(recipeDatabase);
+            } else {
+                const filtered = recipeDatabase.filter(r => r.cat === category);
+                displayRecipes(filtered);
+            }
+        }
+
+        // CORE OPEN MODAL ACTION ENGINE
+        function openRecipe(id) {
+            // Find target item from data pool using unique array matching key
+            const targetRecipe = recipeDatabase.find(item => item.id === id);
+            if (!targetRecipe) return;
+
+            // Map data items into popup frame views
+            modalImg.src = targetRecipe.img;
+            modalImg.alt = targetRecipe.title;
+            modalTitle.innerText = targetRecipe.title;
+            modalMeta.innerText = `${targetRecipe.type} Cuisines | Category: ${targetRecipe.cat}`;
+            modalDesc.innerText = targetRecipe.desc;
+
+            // Build structural dynamic Ingredients list nodes
+            modalIngredients.innerHTML = "";
+            targetRecipe.ingredients.forEach(ing => {
+                const li = document.createElement("li");
+                li.innerText = ing;
+                modalIngredients.appendChild(li);
+            });
+
+            // Build structural dynamic Step list nodes
+            modalSteps.innerHTML = "";
+            targetRecipe.steps.forEach(step => {
+                const li = document.createElement("li");
+                li.innerText = step;
+                modalSteps.appendChild(li);
+            });
+
+            // Set wrapper layout visibility straight to active block frame view
+            modalOverlay.style.display = "flex";
+            document.body.style.overflow = "hidden"; // Locks main page scrolling background
+        }
+
+        // CLOSE MODAL ENGINE ACTION
+        function closeRecipe() {
+            modalOverlay.style.display = "none";
+            document.body.style.overflow = "auto"; // Re-enables document body scrolling
+        }
+
+        // Close window overlay instantly if user clicks out inside translucent background areas
+        modalOverlay.addEventListener("click", (e) => {
+            if(e.target === modalOverlay) closeRecipe();
+        });
+
+        // INTERACTIVE DAY GENERATOR ALGORITHM
+        rollBtn.addEventListener("click", () => {
+            const breakfasts = recipeDatabase.filter(r => r.cat === "breakfast");
+            const lunches = recipeDatabase.filter(r => r.cat === "lunch");
+            const dinners = recipeDatabase.filter(r => r.cat === "dinner");
+            const desserts = recipeDatabase.filter(r => r.cat === "dessert");
+
+            const bItem = breakfasts[Math.floor(Math.random() * breakfasts.length)];
+            const lItem = lunches[Math.floor(Math.random() * lunches.length)];
+            const dItem = dinners[Math.floor(Math.random() * dinners.length)];
+            const eItem = desserts[Math.floor(Math.random() * desserts.length)];
+
+            // Set inner texts matching dynamic titles cleanly with direct popup cook launch hooks
+            document.getElementById("roll-brk").innerHTML = `<a href="#explore" onclick="openRecipe(${bItem.id})" style="color:#800020; font-weight:bold; text-decoration:underline; cursor:pointer;">${bItem.title}</a>`;
+            document.getElementById("roll-lnc").innerHTML = `<a href="#explore" onclick="openRecipe(${lItem.id})" style="color:#800020; font-weight:bold; text-decoration:underline; cursor:pointer;">${lItem.title}</a>`;
+            document.getElementById("roll-din").innerHTML = `<a href="#explore" onclick="openRecipe(${dItem.id})" style="color:#800020; font-weight:bold; text-decoration:underline; cursor:pointer;">${dItem.title}</a>`;
+            document.getElementById("roll-des").innerHTML = `<a href="#explore" onclick="openRecipe(${eItem.id})" style="color:#800020; font-weight:bold; text-decoration:underline; cursor:pointer;">${eItem.title}</a>`;
+
+            rollBtn.style.transform = "scale(0.95)";
+            setTimeout(() => rollBtn.style.transform = "scale(1)", 100);
+        });
+
+        // INITIAL APPLICATION RUN TRIGGER
+        window.addEventListener("DOMContentLoaded", () => {
+            displayRecipes(recipeDatabase);
+        });
+    </script>
+</body>
+</html>
